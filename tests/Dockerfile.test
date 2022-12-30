@@ -1,4 +1,4 @@
-FROM seasketch/geoprocessing-base:latest as builder
+FROM seasketch/geoprocessing-foo:latest as builder
 
 # Python dependencies that require compilation
 RUN python -m pip install cython numpy
