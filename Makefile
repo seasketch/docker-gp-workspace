@@ -5,8 +5,8 @@ TAG ?= latest
 all: build
 
 build:
-	docker build --tag seasketch/geoprocessing-foo:$(TAG) --file Dockerfile .
-	docker tag seasketch/geoprocessing-foo:$(TAG) seasketch/geoprocessing-foo:latest
+	docker build --tag seasketch/geoprocessing-workspace:$(TAG) --file Dockerfile .
+	docker tag seasketch/geoprocessing-workspace:$(TAG) seasketch/geoprocessing-workspace:latest
 
 test:
 	# TODO fix https://api.travis-ci.com/v3/job/166029093/log.txt
@@ -20,11 +20,11 @@ test:
 	# Test GDAL CLI, etc on the base image itself
 	docker run --rm \
 		--volume $(shell pwd)/:/app \
-		seasketch/geoprocessing-foo:$(TAG) \
+		seasketch/geoprocessing-workspace:$(TAG) \
 		/app/tests/run_tests.sh
 
 shell: build
 	docker run --rm -it \
 		--volume $(shell pwd)/:/app \
-		seasketch/geoprocessing-foo:$(TAG) \
+		seasketch/geoprocessing-workspace:$(TAG) \
 		/bin/bash

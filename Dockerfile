@@ -1,6 +1,6 @@
 #----------------------------------- #
 # github: seasketch/docker-gp-workspace
-# docker: seasketch/geoprocessing-foo
+# docker: seasketch/geoprocessing-workspace
 #----------------------------------- #
 FROM ubuntu:focal as builder
 

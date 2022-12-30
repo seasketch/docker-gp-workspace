@@ -5,19 +5,18 @@
 Features:
 - uses recent Ubuntu LTS image
 - includes common utilities for compiling software from source
-- includes conda with a `default` environment that has Python and GDAL.  Users are welcome to create their own environment
+- includes conda with a `base` environment that has Python and GDAL.  Users can adapt or create new environments
+- can be used as a shell environment workspace for users and for heavy geo lifting by geoprocessing CLI commands
 - is built and distributed with the computing resources provided by github and dockerhub.
 
-See [`seasketch/geoprocessing-foo` on Dockerhub](https://hub.docker.com/r/seasketch/geoprocessing-foo)
+See [`seasketch/geoprocessing-workspace` on Dockerhub](https://hub.docker.com/r/seasketch/geoprocessing-workspace)
 
 ## Packages and version numbers
 
 Operating system:
+* Ubuntu Focal 20.04 LTS with Python 3.9
 
-* Debian Bullseye slim with Python 3.11
-
-The following libraries built from source:
-
+Libraries:
 ```
 PROJ_VERSION 8.0.1
 GDAL_VERSION 3.3.1
@@ -35,7 +34,7 @@ To run the GDAL command line utilities on local files, on data in the current wo
 ```bash
 docker run --rm -it \
     --volume $(shell pwd)/:/data \
-    seasketch/geoprocessing-foo:latest \
+    seasketch/geoprocessing-workspace:latest \
     gdalinfo /data/your.tif
 ```
 
@@ -43,7 +42,7 @@ You can set it as an alias to save typing
 
 ```bash
 function with-gp-base {
-    docker run --rm -it --volume $(pwd)/:/data seasketch/geoprocessing-foo:latest "$@"
+    docker run --rm -it --volume $(pwd)/:/data seasketch/geoprocessing-workspace:latest "$@"
 }
 
 with-gp-base gdalinfo /data/your.tif

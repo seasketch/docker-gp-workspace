@@ -31,7 +31,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            seasketch/geoprocessing-foo
+            seasketch/geoprocessing-workspace
           # generate Docker tags based on the following events/attributes
           tags: |
             type=sha
@@ -42,9 +42,9 @@ jobs:
           context: .
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            seasketch/geoprocessing-foo:latest
+            seasketch/geoprocessing-workspace:latest
             ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
