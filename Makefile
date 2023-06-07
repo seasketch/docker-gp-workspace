@@ -8,6 +8,10 @@ build:
 	docker build --tag seasketch/geoprocessing-workspace:$(TAG) --file Dockerfile .
 	docker tag seasketch/geoprocessing-workspace:$(TAG) seasketch/geoprocessing-workspace:latest
 
+# build multi-arch for both amd and arm processors.  Currently not working properly
+buildx:
+	docker buildx build --platform linux/amd64,linux/arm64 --push -t seasketch/geoprocessing-workspace .
+
 test:
 	# TODO fix https://api.travis-ci.com/v3/job/166029093/log.txt
 	# # Test image inheritance and multistage builds

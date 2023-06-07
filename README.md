@@ -14,9 +14,10 @@ See [`seasketch/geoprocessing-workspace` on Dockerhub](https://hub.docker.com/r/
 ## Packages and version numbers
 
 Operating system:
-* Ubuntu Focal 20.04 LTS with Python 3.9
+* Ubuntu Jammy 22.04 LTS with Python 3.9
 
 Libraries:
+
 ```
 PROJ_VERSION 8.0.1
 GDAL_VERSION 3.3.1
@@ -26,6 +27,14 @@ SQLITE_VERSION 3.4
 ## GDAL
 
 GDAL 3.3.1 is used because it supports flatgeobuf files, and works with flatgeobuf JS library v3.17.4 that geoprocessing lib is locked on for now
+
+## Usage
+
+Use the makefile for building images locally and testing them by shelling in to check it out, and by running the test suite.  Committing changes to `main` branch in Github will then rebuild and publish the container image via the `publish` Github action.
+
+- `make` builds the image
+- `make test` tests the image
+- `make shell` gets you into a bash shell with the current working directory mounted at `/app`
 
 ## Using the image directly
 
@@ -47,12 +56,6 @@ function with-gp-base {
 
 with-gp-base gdalinfo /data/your.tif
 ```
-
-## Using the Makefile
-
-- `make` builds the image
-- `make test` tests the image
-- `make shell` gets you into a bash shell with the current working directory mounted at `/app`
 
 ## License
 
