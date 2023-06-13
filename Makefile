@@ -8,7 +8,6 @@ buildamd64:
 	docker build --tag seasketch/geoprocessing-workspace:$(TAG) --file DockerfileAmd64 .
 	docker tag seasketch/geoprocessing-workspace:$(TAG) seasketch/geoprocessing-workspace:latest
 
-# build multi-arch for both amd and arm processors.  Currently not working properly
 buildarm64:
 	docker buildx build --platform linux/arm64 -t seasketch/geoprocessing-workspace -f DockerfileArm64 .
 
