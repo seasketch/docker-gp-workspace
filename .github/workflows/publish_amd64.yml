@@ -39,7 +39,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          file: Dockerfile
+          file: DockerfileAmd64
           context: .
           cache-from: type=gha
           cache-to: type=gha,mode=max
