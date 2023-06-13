@@ -1,4 +1,4 @@
-name: ci
+name: publish arm64
 
 on:
   push:
@@ -35,6 +35,7 @@ jobs:
           # generate Docker tags based on the following events/attributes
           tags: |
             type=sha
+            type=raw,value=latest
       -
         name: Build and push
         uses: docker/build-push-action@v3
