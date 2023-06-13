@@ -2,15 +2,28 @@
 SHELL = /bin/bash
 TAG ?= latest
 
-all: build
+all: buildamd64 buildarm64
 
-build:
-	docker build --tag seasketch/geoprocessing-workspace:$(TAG) --file Dockerfile .
+buildamd64:
+	docker build --tag seasketch/geoprocessing-workspace:$(TAG) --file DockerfileAmd64 .
 	docker tag seasketch/geoprocessing-workspace:$(TAG) seasketch/geoprocessing-workspace:latest
 
 # build multi-arch for both amd and arm processors.  Currently not working properly
-buildx:
-	docker buildx build --platform linux/amd64,linux/arm64 --push -t seasketch/geoprocessing-workspace .
+buildarm64:
+	docker buildx build --platform linux/arm64 -t seasketch/geoprocessing-workspace -f DockerfileArm64 .
+
+shellamd64: buildamd64
+	docker run --rm -it \
+		--volume $(shell pwd)/:/app \
+		seasketch/geoprocessing-workspace:$(TAG) \
+		/bin/bash
+
+shellarm64: buildarm64
+	docker run --rm -it \
+		--platform linux/arm64 \
+		--volume $(shell pwd)/:/app \
+		seasketch/geoprocessing-workspace:$(TAG) \
+		/bin/bash
 
 test:
 	# TODO fix https://api.travis-ci.com/v3/job/166029093/log.txt
@@ -27,8 +40,4 @@ test:
 		seasketch/geoprocessing-workspace:$(TAG) \
 		/app/tests/run_tests.sh
 
-shell: build
-	docker run --rm -it \
-		--volume $(shell pwd)/:/app \
-		seasketch/geoprocessing-workspace:$(TAG) \
-		/bin/bash
+

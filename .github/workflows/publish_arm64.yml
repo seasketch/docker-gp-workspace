@@ -39,10 +39,11 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v3
         with:
+          file: DockerfileArm64
           context: .
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/amd64
+          platforms: linux/arm64
           push: true
           tags: |
             seasketch/geoprocessing-workspace:latest
