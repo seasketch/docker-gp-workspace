@@ -1,10 +1,10 @@
 #----------------------------------- #
-# Use for arm / apple silicon processors
+# Use for Intel or AMd processorts
 # github: seasketch/docker-gp-workspace
 # docker: seasketch/geoprocessing-workspace
 #----------------------------------- #
 ARG VARIANT="jammy"
-FROM mcr.microsoft.com/devcontainers/base:${VARIANT} as builder
+FROM mcr.microsoft.com/devcontainers/base:${VARIANT}
 
 RUN apt-get update && apt-get -y upgrade \
   && apt-get install -y --no-install-recommends \
@@ -18,16 +18,6 @@ RUN apt-get update && apt-get -y upgrade \
 ENV PATH="/root/miniconda3/bin:${PATH}"
 ARG PATH="/root/miniconda3/bin:${PATH}"
 RUN touch /root/.bashrc
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh \
-    && mkdir /root/.conda \
-    && bash Miniconda3-latest-Linux-aarch64.sh -b \
-    && rm -f Miniconda3-latest-Linux-aarch64.sh \
-    && echo "Running $(conda --version)" && \
-    conda init bash && \
-    . /root/.bashrc && \
-    conda update conda && \
-    conda install python=3.8 pip && \
-    conda install -c conda-forge gdal=3.3.1
 
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION v16.16.0
@@ -37,3 +27,8 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | b
 RUN /bin/bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm use --delete-prefix $NODE_VERSION && npm install -g npm@$NPM_VERSION"
 ENV NODE_PATH $NVM_DIR/versions/node/$NODE_VERSION/bin
 ENV PATH $NODE_PATH:$PATH
+
+# Install platform specific dependencies
+COPY installer/ /installer
+ARG TARGETPLATFORM
+RUN /bin/bash -c "source /installer/$TARGETPLATFORM.sh"

@@ -1,4 +1,4 @@
-name: publish arm64
+name: publish
 
 on:
   push:
@@ -35,16 +35,15 @@ jobs:
           # generate Docker tags based on the following events/attributes
           tags: |
             type=sha
-            type=raw,value=latest
       -
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          file: DockerfileArm64
+          file: Dockerfile
           context: .
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/arm64
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             seasketch/geoprocessing-workspace:latest

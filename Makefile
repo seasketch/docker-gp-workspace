@@ -2,24 +2,13 @@
 SHELL = /bin/bash
 TAG ?= latest
 
-all: buildamd64 buildarm64
+all: build
 
-buildamd64:
-	docker build --tag seasketch/geoprocessing-workspace:$(TAG) --file DockerfileAmd64 .
-	docker tag seasketch/geoprocessing-workspace:$(TAG) seasketch/geoprocessing-workspace:latest
+build:
+	docker buildx build --platform linux/amd64,linux/arm64 -t seasketch/geoprocessing-workspace:$(TAG) -f Dockerfile .
 
-buildarm64:
-	docker buildx build --platform linux/arm64 -t seasketch/geoprocessing-workspace -f DockerfileArm64 .
-
-shellamd64: buildamd64
+shell: build
 	docker run --rm -it \
-		--volume $(shell pwd)/:/app \
-		seasketch/geoprocessing-workspace:$(TAG) \
-		/bin/bash
-
-shellarm64: buildarm64
-	docker run --rm -it \
-		--platform linux/arm64 \
 		--volume $(shell pwd)/:/app \
 		seasketch/geoprocessing-workspace:$(TAG) \
 		/bin/bash
