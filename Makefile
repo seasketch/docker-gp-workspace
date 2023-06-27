@@ -1,15 +1,20 @@
 
 SHELL = /bin/bash
-TAG ?= latest
+TAG ?= local
 
 all: build
 
+# Test build current architecture
 build:
+	docker build --tag seasketch/geoprocessing-workspace:$(TAG) --file Dockerfile .
+	docker tag seasketch/geoprocessing-workspace:$(TAG) seasketch/geoprocessing-workspace:latest
+
+# Test build multi-architecture
+buildmulti:
 	docker buildx build --platform linux/amd64,linux/arm64 -t seasketch/geoprocessing-workspace:$(TAG) -f Dockerfile .
 
 shell: build
 	docker run --rm -it \
-		--volume $(shell pwd)/:/app \
 		seasketch/geoprocessing-workspace:$(TAG) \
 		/bin/bash
 
