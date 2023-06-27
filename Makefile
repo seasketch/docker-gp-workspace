@@ -1,13 +1,12 @@
 
 SHELL = /bin/bash
-TAG ?= local
+TAG ?= test
 
 all: build
 
 # Test build current architecture
 build:
 	docker build --tag seasketch/geoprocessing-workspace:$(TAG) --file Dockerfile .
-	docker tag seasketch/geoprocessing-workspace:$(TAG) seasketch/geoprocessing-workspace:latest
 
 # Test build multi-architecture
 buildmulti:
