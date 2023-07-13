@@ -15,3 +15,10 @@ mkdir -p ~/miniconda \
     conda install -c conda-forge gdal=3.3.1 && \
     cd ~ && \
     rm -rf ~/miniconda
+
+    mkdir -p ~/awscli \
+    && cd ~/awscli \
+    && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && sudo ./aws/install \
+    && rm -rf ~/awscli
