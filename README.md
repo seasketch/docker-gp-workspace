@@ -1,15 +1,26 @@
 # Docker image for seasketch geoprocessing workspace
 
-`docker-gp-workspace` builds a reliable base image for creating a GIS workspace for SeaSketch [geoprocessing](https://github.com/seasketch/geoprocessing) projects
+The `docker-gp-workspace` repository builds and publishes a [Docker image](https://hub.docker.com/r/seasketch/geoprocessing-workspace) providing a stable [devcontainer workspace](https://github.com/seasketch/geoprocessing-devcontainer) for SeaSketch [geoprocessing](https://github.com/seasketch/geoprocessing) projects.
 
 Features:
-- uses recent Ubuntu LTS image
+
+- uses Ubuntu LTS image
 - includes common utilities for compiling software from source
-- includes conda with a `base` environment that has Python and GDAL.  Users can adapt or create new environments
+- includes conda (via miniconda) with a `base` environment that has Python and GDAL.  Users can adapt or create new environments
 - can be used as a shell environment workspace for users and for heavy geo lifting by geoprocessing CLI commands
 - is built and distributed with the computing resources provided by github and dockerhub.
 
-See [`seasketch/geoprocessing-workspace` on Dockerhub](https://hub.docker.com/r/seasketch/geoprocessing-workspace)
+## Usage
+
+You should not need to work with this repository directly, unless you need to extend the `geoprocessing-workspace` image to meet your own needs.
+
+To do this, clone the repository locally, make any changes you want to the Dockerfile or related architecture-specific installer scripts, then use the `Makefile` to build and test it.  You will need to have the `make` software package already installed.
+
+Use the makefile for changing the build build by building images locally and testing them by shelling in to check it out, and by running the test suite.  Committing changes to `main` branch in Github will then rebuild and publish the container image via the `publish` Github action.
+
+- `make` builds an `amd64` Docker image and tags it as 'test', to differentiate it from any of the 'latest' images you might have installed.
+- `make test` Runs test suite on the 'test' image
+- `make shell` Starts a container using 'test' image (building it first if necessary), then opens a bash shell.  This is useful for testing that your Dockerfile changes are working as expected.
 
 ## Packages and version numbers
 
@@ -28,17 +39,11 @@ SQLITE_VERSION 3.4
 
 GDAL 3.3.1 is used because it supports flatgeobuf files, and works with flatgeobuf JS library v3.17.4 that geoprocessing lib is locked on for now
 
-## Usage
+## Alternative Uses
 
-Use the makefile for building images locally and testing them by shelling in to check it out, and by running the test suite.  Committing changes to `main` branch in Github will then rebuild and publish the container image via the `publish` Github action.
+You can run standalone commands using the Docker image, for example bringing input data into a container, transforming it using GDAL, and then bringing the result back out of the container
 
-- `make` builds the image
-- `make test` tests the image
-- `make shell` gets you into a bash shell with the current working directory mounted at `/app`
-
-## Using the image directly
-
-To run the GDAL command line utilities on local files, on data in the current working directory:
+The following command binds your current working directory in your host operating system to the `/data` path in the container.  You can read from `/data` and then write to it to persist data in your host operating system.:
 
 ```bash
 docker run --rm -it \
@@ -47,7 +52,7 @@ docker run --rm -it \
     gdalinfo /data/your.tif
 ```
 
-You can set it as an alias to save typing
+You can set this up as an alias to run commands in a container in a way that is very similar to how you would run it directly in your operating system.
 
 ```bash
 function with-gp-base {
