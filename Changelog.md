@@ -1,3 +1,8 @@
+## 2023-07-25 release
+
+:bug: Bugfix
+
+* Fix miniconda version to `Miniconda3-py38_23.3.1-0`` to avoid dependency collision error when installing gdal in latest version released 07/12/23
 
 ## 2023-07-12 release
 
