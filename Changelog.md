@@ -1,3 +1,9 @@
+## 2023-09-19
+
+:rocket: New Feature / Improvement
+
+* Add postgis with shp2pgsql and raster2pgsql
+
 ## 2023-07-25 release
 
 :bug: Bugfix

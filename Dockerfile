@@ -9,10 +9,15 @@ FROM mcr.microsoft.com/devcontainers/base:${VARIANT}
 # Switch to built-in non-root gp user with sudo capabilities
 USER vscode
 
+RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+
 # Install common dependencies
 RUN sudo apt-get update && sudo apt-get -y upgrade \
   && sudo apt-get install -y --no-install-recommends \
     postgresql-client \
+    postgis \
+    postgresql-14-postgis-3 \
     openjdk-17-jdk \
     git \
     wget \
