@@ -3,16 +3,16 @@
 # Put installer in current user home directory, install to home directory, add to user bash config, and remove installer
 mkdir -p ~/miniconda \
     && cd ~/miniconda \
-    && wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh \
+    && wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
     && mkdir ~/.conda \
-    && chmod 755 Miniconda3-py38_23.3.1-0-Linux-x86_64.sh \
-    && bash Miniconda3-py38_23.3.1-0-Linux-x86_64.sh -b -p /home/vscode/miniconda3 \
+    && chmod 755 Miniconda3-latest-Linux-x86_64.sh \
+    && bash Miniconda3-latest-Linux-x86_64.sh -b -p /home/vscode/miniconda3 \
     && echo "Running $(conda --version)" && \
     conda init bash && \
     . /home/vscode/.bashrc && \
     conda update conda && \
-    conda install python=3.8 pip && \
-    conda install -c conda-forge gdal=3.3.1 && \
+    conda install python pip && \
+    conda install -c conda-forge gdal && \
     cd ~ && \
     rm -rf ~/miniconda
 

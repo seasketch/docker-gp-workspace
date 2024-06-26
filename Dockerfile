@@ -27,14 +27,14 @@ RUN sudo apt-get update && sudo apt-get -y upgrade \
     && sudo rm -rf /var/lib/apt/lists/*
 
 # Install nvm to user directory - based on https://github.com/nvm-sh/nvm and https://github.com/nvm-sh/nvm/blob/master/Dockerfile
-ENV NODE_VERSION v16.16.0
+ENV NODE_VERSION v20.12.1
 RUN mkdir -p /home/vscode/.nvm/
 RUN chown vscode:vscode -R "$HOME/.nvm"
 RUN echo 'export NVM_DIR="/home/vscode/.nvm"'                                       >> "$HOME/.bashrc"
 RUN echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> "$HOME/.bashrc"
 RUN echo '[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion" # This loads nvm bash_completion' >> "$HOME/.bashrc"
 RUN cd ~
-RUN sudo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+RUN sudo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
 # Install platform specific dependencies
 COPY installer/ /installer
