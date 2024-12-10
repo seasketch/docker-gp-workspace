@@ -8,6 +8,7 @@ mkdir -p ~/miniconda \
     && chmod 755 Miniconda3-py312_24.7.1-0-Linux-aarch64.sh \
     && bash Miniconda3-py312_24.7.1-0-Linux-aarch64.sh -b -p /home/vscode/miniconda3 \
     && echo "Running $(conda --version)" && \
+    conda config --add channels defaults && \
     conda init bash && \
     . /home/vscode/.bashrc && \
     conda update conda && \
