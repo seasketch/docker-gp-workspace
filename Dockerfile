@@ -25,7 +25,7 @@ RUN sudo apt-get update && sudo apt-get -y upgrade \
     && sudo rm -rf /var/lib/apt/lists/*
 
 # Install nvm to user directory - based on https://github.com/nvm-sh/nvm and https://github.com/nvm-sh/nvm/blob/master/Dockerfile
-ENV NODE_VERSION v22.11.0
+ENV NODE_VERSION v22.12.0
 RUN mkdir -p /home/vscode/.nvm/
 RUN chown vscode:vscode -R "$HOME/.nvm"
 RUN echo 'export NVM_DIR="/home/vscode/.nvm"'                                       >> "$HOME/.bashrc"

@@ -23,3 +23,6 @@ mkdir -p ~/miniconda \
     && unzip awscliv2.zip \
     && sudo ./aws/install \
     && rm -rf ~/awscli
+
+# miniconda pinned to py312_24.7.1-0-Linux-x86_64 due to sqlite shared library not found error
+# conda-libmamba-solver workaround due to error - https://stackoverflow.com/a/78293971
