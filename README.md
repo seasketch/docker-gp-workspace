@@ -6,38 +6,39 @@ Features:
 
 - uses Ubuntu LTS image
 - includes common utilities for compiling software from source
+- includes LTS version of Node
 - includes conda (via miniconda) with a `base` environment that has Python and GDAL.  Users can adapt or create new environments
+- includes awscli for deploying geoprocessing projects to AWS and working with them.
 - can be used as a shell environment workspace for users and for heavy geo lifting by geoprocessing CLI commands
 - is built and distributed with the computing resources provided by github and dockerhub.
 
 ## Usage
 
-You should not need to work with this repository directly, unless you need to extend the `geoprocessing-workspace` image to meet your own needs.
+You should not need to work with this repository directly, unless you need to upgrade the `geoprocessing-workspace` image or extend it to meet your own needs.
 
-To do this, clone the repository locally, make any changes you want to the Dockerfile or related architecture-specific installer scripts, then use the `Makefile` to build and test it.  You will need to have the `make` software package already installed.
+### Upgrade
 
-Use the makefile for changing the build build by building images locally and testing them by shelling in to check it out, and by running the test suite.  Committing changes to `main` branch in Github will then rebuild and publish the container image via the `publish` Github action.
+To upgrade the image:
 
-- `make` builds an `amd64` Docker image and tags it as 'test', to differentiate it from any of the 'latest' images you might have installed.
-- `make test` Runs test suite on the 'test' image
-- `make shell` Starts a container using 'test' image (building it first if necessary), then opens a bash shell.  This is useful for testing that your Dockerfile changes are working as expected.
-
-## Packages and version numbers
-
-Operating system:
-* Ubuntu Jammy 22.04 LTS with Python 3.9
-
-Libraries:
-
-```
-PROJ_VERSION 8.0.1
-GDAL_VERSION 3.3.1
-SQLITE_VERSION 3.4
-```
-
-## GDAL
-
-GDAL 3.3.1 is used because it supports flatgeobuf files, and works with flatgeobuf JS library v3.17.4 that geoprocessing lib is locked on for now
+- install and start Docker Desktop on your local system
+- clone this repository locally and checkout the `dev` branch.
+- make changes to the Dockerfile or related architecture-specific installer scripts
+- run `make`
+  - Builds a new Docker image.  You will need to have the `make` software package already installed.
+  - this will build an image with the architecture of your system (`amd64` for `arm64`) and tags it as 'test', to differentiate it from any of the 'latest' images you might have installed.
+- run `make shell`
+  - starts a container using 'test' image (building it first if necessary), then opens a bash shell.  This is useful for testing that your Dockerfile changes are working as expected.
+  - try running `node -v` or `gdalinfo` and make sure these commands output as expected.  You can go as far as to init a new geoprocessing project and make sure you can import a new dataset and run precalc.
+- debugging
+  - if the build is failing part way through your Dockerfile or architecture-specific script, a useful way to debug is to comment out the part of the build that is not working (and everything after it).  Then run `make` to build an image up to that point.  Then run `make shell` and run commands manually to figure out what is going wrong and how to fix it.  Once you get it working, update your Dockerfile or architecture-specific scripts with the updated commands, then uncomment and `make` to try and run a full build.  Keep doing this until you get to something that works.
+- if your new image is looking ready
+  - commit and push your changes to the dev branch.
+  - The `publish unstable` Github action in `.github/workflows/publish-unstable.yml` will automatically trigger and publish a new container image with the `unstable` tag to [Docker Hub](https://hub.docker.com/r/seasketch/geoprocessing-workspace/tags).
+  - Follow instructions for [unstable testing](https://seasketch.github.io/geoprocessing/docs/next/tutorials/upgrade/#upgrade-devcontainer) in the geoprocessing-devcontainer.
+- if the unstable image is ready to go stable
+  - Open a PR from the `dev` branch to `main` and merge it.  Do not squash commits.
+  - One merge the `publish` Githunb action in `.github/workflows/publish.yml` will automatically trigger and publish a new container image with the `latest` tag.
+  - Follow instructions for [testing](https://seasketch.github.io/geoprocessing/docs/next/tutorials/upgrade/#upgrade-devcontainer) in the geoprocessing-devcontainer.
 
 ## Alternative Uses
 
